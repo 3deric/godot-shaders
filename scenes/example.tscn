@@ -1,0 +1,54 @@
+[gd_scene load_steps=11 format=3 uid="uid://grb7nl0kdkdk"]
+
+[ext_resource type="Shader" uid="uid://dlxid5prflj7c" path="res://shaders/01_canvas/03_basic_texture.gdshader" id="1_o34ws"]
+[ext_resource type="Texture2D" uid="uid://ccttu84oak1gm" path="res://icon.svg" id="2_pssa7"]
+[ext_resource type="Shader" uid="uid://b24ff0gl2uefl" path="res://shaders/01_canvas/05_texture_roughen.gdshader" id="3_7w8s4"]
+[ext_resource type="Shader" uid="uid://dh0m15nuvhtp3" path="res://shaders/01_canvas/04_vertex_deformation.gdshader" id="3_ucs8h"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pssa7"]
+shader = ExtResource("1_o34ws")
+shader_parameter/color_texture = ExtResource("2_pssa7")
+shader_parameter/size = 2.6550000000000002
+shader_parameter/tint = Vector4(1, 1, 1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_aoc7i"]
+shader = ExtResource("3_ucs8h")
+shader_parameter/noise_size = 1.0
+
+[sub_resource type="Gradient" id="Gradient_7w8s4"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ucs8h"]
+noise_type = 0
+frequency = 0.0506
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_aoc7i"]
+width = 256
+height = 256
+noise = SubResource("FastNoiseLite_ucs8h")
+color_ramp = SubResource("Gradient_7w8s4")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ucs8h"]
+shader = ExtResource("3_7w8s4")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_aoc7i")
+shader_parameter/dist_threshold = 0.15
+
+[node name="Example" type="Node2D"]
+
+[node name="Panel" type="Panel" parent="."]
+material = SubResource("ShaderMaterial_pssa7")
+offset_right = 84.0
+offset_bottom = 80.0
+
+[node name="Panel2" type="Panel" parent="."]
+material = SubResource("ShaderMaterial_aoc7i")
+offset_left = 126.0
+offset_top = 29.0
+offset_right = 206.0
+offset_bottom = 109.0
+
+[node name="Panel3" type="Panel" parent="."]
+material = SubResource("ShaderMaterial_ucs8h")
+offset_left = 19.0
+offset_top = 96.0
+offset_right = 64.0
+offset_bottom = 141.0
