@@ -1,14 +1,15 @@
-[gd_scene load_steps=11 format=3 uid="uid://grb7nl0kdkdk"]
+[gd_scene load_steps=15 format=3 uid="uid://grb7nl0kdkdk"]
 
 [ext_resource type="Shader" uid="uid://dlxid5prflj7c" path="res://shaders/01_canvas/03_basic_texture.gdshader" id="1_o34ws"]
 [ext_resource type="Texture2D" uid="uid://ccttu84oak1gm" path="res://icon.svg" id="2_pssa7"]
 [ext_resource type="Shader" uid="uid://b24ff0gl2uefl" path="res://shaders/01_canvas/05_texture_roughen.gdshader" id="3_7w8s4"]
 [ext_resource type="Shader" uid="uid://dh0m15nuvhtp3" path="res://shaders/01_canvas/04_vertex_deformation.gdshader" id="3_ucs8h"]
+[ext_resource type="Shader" uid="uid://b0iee72y4nrvy" path="res://shaders/01_canvas/06_texture_roughen_aspect_independent.gdshader" id="5_aoc7i"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pssa7"]
 shader = ExtResource("1_o34ws")
 shader_parameter/color_texture = ExtResource("2_pssa7")
-shader_parameter/size = 2.6550000000000002
+shader_parameter/size = 2.655
 shader_parameter/tint = Vector4(1, 1, 1, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_aoc7i"]
@@ -32,6 +33,21 @@ shader = ExtResource("3_7w8s4")
 shader_parameter/noise_texture = SubResource("NoiseTexture2D_aoc7i")
 shader_parameter/dist_threshold = 0.15
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_klr1q"]
+noise_type = 0
+frequency = 0.0254
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4vkub"]
+noise = SubResource("FastNoiseLite_klr1q")
+seamless = true
+as_normal_map = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1ywam"]
+shader = ExtResource("5_aoc7i")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_4vkub")
+shader_parameter/dist_threshold = 55.2730026254675
+shader_parameter/texture_size = 1024.0
+
 [node name="Example" type="Node2D"]
 
 [node name="Panel" type="Panel" parent="."]
@@ -52,3 +68,10 @@ offset_left = 19.0
 offset_top = 96.0
 offset_right = 64.0
 offset_bottom = 141.0
+
+[node name="Panel4" type="Panel" parent="."]
+material = SubResource("ShaderMaterial_1ywam")
+offset_left = 20.0
+offset_top = 154.0
+offset_right = 180.0
+offset_bottom = 273.0
